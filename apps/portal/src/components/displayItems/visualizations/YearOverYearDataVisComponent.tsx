@@ -16,6 +16,7 @@ import { CaptionPopover } from "@/components/CaptionPopover";
 import {
 	useContainerSize,
 	useDimensionViewControls,
+	useVisualizationLegendSet,
 	useVisualizationRefs,
 } from "@/hooks/dataVisualization";
 import { useYearOverYearAnalytics } from "@packages/shared/hooks";
@@ -64,12 +65,17 @@ export function YearOverYearDataVisComponent({
 
 	const {
 		analytics,
-		loading,
+		loading: analyticsLoading,
 		setSelectedPeriods,
 		setSelectedOrgUnits,
 		selectedPeriods,
 		selectedOrgUnits,
 	} = useYearOverYearAnalytics({ visualizationConfig });
+
+	const { loading: legendSetLoading, legendSet } =
+		useVisualizationLegendSet(visualizationConfig);
+
+	const loading = analyticsLoading || legendSetLoading;
 
 	const searchParams = useSearchParams();
 

@@ -1,5 +1,4 @@
 import { z } from "zod";
-import { LegendSet } from "@hisptz/dhis2-utils";
 
 export const visualizationFields = [
 	"access",
@@ -8,12 +7,12 @@ export const visualizationFields = [
 	"colSubTotals",
 	"colTotals",
 	"colorSet",
-	"columns[dimension,filter,items[dimensionItem~rename(id),name,displayName,displayShortName,dimensionItemType,expression,access]]",
+	"columns[dimension,filter,legendSet[id,name,displayName,displayShortName,legends[id,color,startValue,endValue]],items[dimensionItem~rename(id),name,displayName,displayShortName,dimensionItemType,expression,access]]",
 	"completedOnly",
 	"created",
 	"cumulative",
 	"cumulativeValues",
-	"dataDimensionItems[dataDimensionItemType,expressionDimensionItem[legendSet[id,name,displayName,displayShortName,legends[id,color,startValue,endValue]],dimensionItem~rename(id),name,displayName,displayShortName,dimensionItemType,expression,access],dataElement[legendSet[id,name,displayName,displayShortName,legends[id,color,startValue,endValue]],dimensionItem~rename(id),name,displayName,displayShortName,dimensionItemType,expression,access],dataElementOperand[legendSet[id,name,displayName,displayShortName,legends[id,color,startValue,endValue]],dimensionItem~rename(id),name,displayName,displayShortName,dimensionItemType,expression,access],reportingRate[legendSet[id,name,displayName,displayShortName,legends[id,color,startValue,endValue]],dimensionItem~rename(id),name,displayName,displayShortName,dimensionItemType,expression,access],programAttribute[legendSet[id,name,displayName,displayShortName,legends[id,color,startValue,endValue]],dimensionItem~rename(id),name,displayName,displayShortName,dimensionItemType,expression,access],programIndicator[legendSet[id,name,displayName,displayShortName,legends[id,color,startValue,endValue]],dimensionItem~rename(id),name,displayName,displayShortName,dimensionItemType,expression,access],indicator[legendSet[id,name,displayName,displayShortName,legends[id,color,startValue,endValue]],dimensionItem~rename(id),name,displayName,displayShortName,dimensionItemType,expression,access],programDataElement[legendSet[id,name,displayName,displayShortName,legends[id,color,startValue,endValue]],dimensionItem~rename(id),name,displayName,displayShortName,dimensionItemType,expression,access]]",
+	"dataDimensionItems[dataDimensionItemType,expressionDimensionItem[dimensionItem~rename(id),name,displayName,displayShortName,dimensionItemType,expression,access],dataElement[dimensionItem~rename(id),name,displayName,displayShortName,dimensionItemType,expression,access],dataElementOperand[dimensionItem~rename(id),name,displayName,displayShortName,dimensionItemType,expression,access],reportingRate[dimensionItem~rename(id),name,displayName,displayShortName,dimensionItemType,expression,access],programAttribute[dimensionItem~rename(id),name,displayName,displayShortName,dimensionItemType,expression,access],programIndicator[dimensionItem~rename(id),name,displayName,displayShortName,dimensionItemType,expression,access],indicator[dimensionItem~rename(id),name,displayName,displayShortName,dimensionItemType,expression,access],programDataElement[dimensionItem~rename(id),name,displayName,displayShortName,dimensionItemType,expression,access]]",
 	"description",
 	"digitGroupSeparator",
 	"displayDensity",
@@ -24,7 +23,7 @@ export const visualizationFields = [
 	"displayTitle",
 	"favorite",
 	"favorites",
-	"filters[dimension,filter,items[dimensionItem~rename(id),name,displayName,displayShortName,dimensionItemType,expression,access]]",
+	"filters[dimension,filter,legendSet[id,name,displayName,displayShortName,legends[id,color,startValue,endValue]],items[dimensionItem~rename(id),name,displayName,displayShortName,dimensionItemType,expression,access]]",
 	"fixColumnHeaders",
 	"fixRowHeaders",
 	"fontSize",
@@ -40,7 +39,7 @@ export const visualizationFields = [
 	"interpretations[id,created]",
 	"lastUpdated",
 	"lastUpdatedBy",
-	"legend[showKey,style,strategy,set[id,name,displayName,displayShortName,legends[id,color,startValue,endValue,name]]]",
+	"legend[showKey,style,strategy,set[id,name,displayName,displayShortName]]",
 	"measureCriteria",
 	"name",
 	"noSpaceBetweenColumns",
@@ -54,7 +53,7 @@ export const visualizationFields = [
 	"reportingParams",
 	"rowSubTotals",
 	"rowTotals",
-	"rows[dimension,filter,items[dimensionItem~rename(id),name,displayName,displayShortName,dimensionItemType,expression,access]]",
+	"rows[dimension,filter,legendSet[id,name,displayName,displayShortName,legends[id,color,startValue,endValue]],items[dimensionItem~rename(id),name,displayName,displayShortName,dimensionItemType,expression,access]]",
 	"series",
 	"seriesKey",
 	"shortName",
@@ -142,10 +141,6 @@ export enum DataDimensionItemType {
 	PROGRAM_INDICATOR = "PROGRAM_INDICATOR",
 }
 
-export type LegendSetConfig =
-	| LegendSet
-	| { dataItem: string; legendSet: LegendSet }[];
-
 export enum DigitGroupSeparator {
 	SPACE = "SPACE",
 }
@@ -180,7 +175,7 @@ const legendSet = z.object({
 	id: z.string(),
 	name: z.string(),
 	displayName: z.string(),
-	displayShortName: z.string().optional(),
+	displayShortName: z.string(),
 	legends: z.array(
 		z.object({
 			id: z.string(),
@@ -210,7 +205,6 @@ const dataDimensionItem = z.object({
 	expression: z.string().optional(),
 	access: accessSchema,
 	dimensionItemType: z.string(),
-	legendSet: legendSet.optional(),
 });
 
 export type DataDimensionItem = z.infer<typeof dataDimensionItem>;
@@ -223,11 +217,6 @@ const dimension = z.object({
 });
 
 export type DimensionConfig = z.infer<typeof dimension>;
-
-export enum LegendStrategy {
-	FIXED = "FIXED",
-	BY_DATA_ITEM = "BY_DATA_ITEM",
-}
 
 export const visualizationSchema = z.object({
 	access: accessSchema,
@@ -288,7 +277,7 @@ export const visualizationSchema = z.object({
 		.object({
 			showKey: z.boolean(),
 			style: z.string().optional(),
-			strategy: z.nativeEnum(LegendStrategy).optional(),
+			strategy: z.string().optional(),
 			set: z
 				.object({
 					id: z.string(),

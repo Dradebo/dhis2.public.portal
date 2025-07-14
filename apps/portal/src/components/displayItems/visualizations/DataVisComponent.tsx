@@ -19,10 +19,12 @@ import { VisualizationTitle } from "@/components/displayItems/visualizations/Vis
 import {
 	useContainerSize,
 	useDimensionViewControls,
+	useVisualizationLegendSet,
 	useVisualizationRefs,
 } from "@/hooks/dataVisualization";
+import { ChartSelector } from "@/components/displayItems/visualizations/ChartSelector";
 import { useAnalytics } from "@packages/shared/hooks";
-import { ChartSelector, TableVisualizer } from "@packages/ui/visualizations";
+import { TableVisualizer } from "@packages/ui/visualizations";
 
 export function DataVisComponent({
 	visualizationConfig,
@@ -60,12 +62,17 @@ export function DataVisComponent({
 
 	const {
 		analytics,
-		loading,
+		loading: analyticsLoading,
 		setSelectedPeriods,
 		setSelectedOrgUnits,
 		selectedPeriods,
 		selectedOrgUnits,
 	} = useAnalytics({ visualizationConfig });
+
+	const { loading: legendSetLoading, legendSet } =
+		useVisualizationLegendSet(visualizationConfig);
+
+	const loading = analyticsLoading || legendSetLoading;
 
 	const searchParams = useSearchParams();
 
@@ -127,15 +134,19 @@ export function DataVisComponent({
 							<div className="flex-1 h-full">
 								{type ===
 									VisualizationDisplayItemType.CHART && (
-									<ChartSelector
-										colors={colors}
-										setRef={chartRef}
-										analytics={analytics}
-										visualization={visualizationConfig}
-										fullScreen={handler.active}
-										tableRef={tableRef}
-									/>
-								)}
+										<ChartSelector
+											colors={colors}
+											setRef={chartRef}
+											analytics={analytics}
+											visualization={visualizationConfig}
+											config={config}
+											fullScreen={handler.active}
+											containerRef={containerRef}
+											legendSet={legendSet}
+											tableRef={tableRef}
+											setSingleValueRef={setSingleValueRef}
+										/>
+									)}
 							</div>
 						)
 					) : (
