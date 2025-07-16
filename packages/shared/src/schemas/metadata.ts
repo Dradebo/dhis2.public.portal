@@ -8,24 +8,21 @@ const appIconSchema = z.object({
 
 export type AppMetaIcon = z.infer<typeof appIconSchema>;
 
-// Define AppIconFile conditionally based on environment
-export const AppIconFile = typeof File !== "undefined"
-	? class AppIconFile extends File {
-			id?: string;
+export class AppIconFile extends File {
+	id?: string;
 
-			setId(id: string) {
-				this.id = id;
-				return this;
-			}
+	setId(id: string) {
+		this.id = id;
+		return this;
+	}
 
-			static async fromFile(file: File) {
-				return new AppIconFile([await file.arrayBuffer()], file.name, {
-					lastModified: file.lastModified,
-					type: file.type,
-				});
-			}
-		}
-	: undefined;
+	static async fromFile(file: File) {
+		return new AppIconFile([await file.arrayBuffer()], file.name, {
+			lastModified: file.lastModified,
+			type: file.type,
+		});
+	}
+}
 
 export const metadataSchema = z.object({
 	description: z.string(),
@@ -37,20 +34,12 @@ export const metadataSchema = z.object({
 		.url(),
 });
 
-// Define metadataFormSchema conditionally
-export const metadataFormSchema = typeof File !== "undefined" && AppIconFile
-	? z.object({
-			name: z.string(),
-			description: z.string(),
-			icon: z.instanceof(AppIconFile),
-			applicationURL: z.string().url(),
-		})
-	: z.object({
-			name: z.string(),
-			description: z.string(),
-			icon: z.any(),
-			applicationURL: z.string().url(),
-		});
+export const metadataFormSchema = z.object({
+	name: z.string(),
+	description: z.string(),
+	icon: z.instanceof(AppIconFile),
+	applicationURL: z.string().url(),
+});
 
 export type MetadataForm = z.infer<typeof metadataFormSchema>;
 
