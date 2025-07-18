@@ -20,7 +20,7 @@ const visQuery = {
 				fields: ["id", "displayName", "type"],
 				order: "name:asc",
 				paging: false,
-				filter: type ? [`type:eq:${type}`] : undefined,
+				filter: type ? [`type:eq:${type}`] : [], // Always send an empty array if no type is selected
 			};
 		},
 	},
