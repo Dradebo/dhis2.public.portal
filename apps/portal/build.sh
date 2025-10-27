@@ -18,7 +18,7 @@ BUNDLE_NAME="$PKG_NAME-$PKG_VERSION.zip"
 cd build  || return
 yarn install --frozen-lockfile
 echo "Building the app"
-yarn portal build
+yarn build --filter portal
 
 echo "Copying files"
 cp apps/portal/next.config.ts app/

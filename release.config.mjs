@@ -17,7 +17,14 @@ export default {
 		[
 			"@semantic-release/exec",
 			{
-				prepareCmd: "yarn build && yarn portal build:standalone",
+				prepareCmd: "node scripts/update-versions.js ${nextRelease.version}",
+			},
+		],
+		[
+			"@semantic-release/exec",
+			{
+				prepareCmd:
+					"yarn build --filter manager && yarn build:standalone",
 			},
 		],
 		[
