@@ -1,6 +1,6 @@
 import { createFileRoute, Outlet } from "@tanstack/react-router";
 import React from "react";
-import { ConfigProvider } from "../../shared/components/ConfigProvider";
+import { InitConfigProvider } from "../../shared/components/InitConfigProvider";
 import { DatastoreKeys } from "@packages/shared/constants";
 import { defaultAppearanceConfig } from "../../shared/constants/defaults/appearance";
 
@@ -10,11 +10,11 @@ export const Route = createFileRoute("/appearance/_provider")({
 
 function RouteComponent() {
 	return (
-		<ConfigProvider
+		<InitConfigProvider
 			dataStoreKey={DatastoreKeys.APPEARANCE}
 			defaultConfig={defaultAppearanceConfig}
 		>
 			<Outlet />
-		</ConfigProvider>
+		</InitConfigProvider>
 	);
 }
