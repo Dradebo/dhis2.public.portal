@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2026-01-13T08:47:13.389Z\n"
-"PO-Revision-Date: 2026-01-13T08:47:13.390Z\n"
+"POT-Creation-Date: 2026-01-13T10:26:19.161Z\n"
+"PO-Revision-Date: 2026-01-13T10:26:19.162Z\n"
 
 msgid "Could not get Appearance configurations"
 msgstr "Could not get Appearance configurations"
@@ -764,17 +764,11 @@ msgstr "Group selector"
 msgid "Save group changes"
 msgstr "Save group changes"
 
-msgid "small screen"
-msgstr "small screen"
-
-msgid "medium screen"
-msgstr "medium screen"
-
-msgid "large screen"
-msgstr "large screen"
-
 msgid "Failed to save visualization"
 msgstr "Failed to save visualization"
+
+msgid "Small screens"
+msgstr "Small screens"
 
 msgid "Welcome to the FlexiPortal Manager!"
 msgstr "Welcome to the FlexiPortal Manager!"
