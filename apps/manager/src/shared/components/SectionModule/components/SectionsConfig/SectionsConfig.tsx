@@ -24,7 +24,7 @@ import { useSaveModule } from "../../../ModulesPage/hooks/save";
 
 export function SectionsConfig() {
 	const { moduleId } = useParams({
-		from: "/modules/_provider/$moduleId",
+		from: "/modules/_provider/$moduleId/_formProvider/edit/",
 	});
 	const { save } = useSaveModule(moduleId);
 	const navigate = useNavigate();

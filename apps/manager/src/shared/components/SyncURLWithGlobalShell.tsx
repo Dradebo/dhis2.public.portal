@@ -6,7 +6,7 @@ export function SyncURLWithGlobalShell() {
 
 	useEffect(() => {
 		dispatchEvent(new PopStateEvent("popstate"));
-	}, [location.url]);
+	}, [location.hash]);
 
 	return null;
 }

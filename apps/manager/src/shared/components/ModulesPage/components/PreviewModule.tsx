@@ -6,7 +6,7 @@ import { useAppMetadataConfig } from "../../MetadataConfigProvider";
 
 export function PreviewModule() {
 	const { moduleId } = useParams({
-		from: "/modules/_provider/$moduleId",
+		from: "/modules/_provider/$moduleId/_formProvider/edit/",
 	});
 	const config = useAppMetadataConfig();
 	const url = `${config.applicationURL}/preview/modules/${moduleId}`;

@@ -15,7 +15,7 @@ import { capitalize } from "lodash";
 
 export function ModuleVisualizationsConfig() {
 	const { moduleId } = useParams({
-		from: "/modules/_provider/$moduleId",
+		from: "/modules/_provider/$moduleId/_formProvider/edit/",
 	});
 	const navigate = useNavigate();
 	const hasGroups = useWatch<VisualizationModule, "config.grouped">({

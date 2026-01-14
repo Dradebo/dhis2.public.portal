@@ -104,8 +104,6 @@ describe("Modules Page", () => {
 
 			cy.contains("button", "Create module").click();
 
-			cy.contains("button", "Back to all modules").click();
-
 			cy.contains("td", label).should("exist");
 		});
 	});
@@ -151,7 +149,7 @@ describe("Modules Page", () => {
 		cy.get('[data-test="button-add-visualization"]').click();
 
 		cy.get('[data-test="screen-size-select"]').click();
-		cy.get('[data-value="1500"]').click();
+		cy.get('[data-value="lg"]').click();
 
 		cy.get(
 			`[data-prefix="${visualizations[1]}"] > .absolute > svg > path`,
@@ -232,7 +230,7 @@ describe("Modules Page", () => {
 		cy.get('[data-test="button-add-visualization"]').click();
 
 		cy.get('[data-test="screen-size-select"]').click();
-		cy.get('[data-value="1500"]').click();
+		cy.get('[data-value="lg"]').click();
 
 		cy.get(
 			`[data-prefix="${visualizations[1]}"] > .absolute > svg > path`,
@@ -341,11 +339,19 @@ describe("Modules Page", () => {
 
 		//For non-grouped - Test different file types
 		const documentTypes = [
-			{ title: "PDF Document", type: "PDF", file: "FlexiPortal_Overview.pdf" },
+			{
+				title: "PDF Document",
+				type: "PDF",
+				file: "FlexiPortal_Overview.pdf",
+			},
 			{ title: "Text Document", type: "TXT", file: "test-document.txt" },
-			{ title: "Archive Document", type: "ZIP", file: "test-archive.zip" }
+			{
+				title: "Archive Document",
+				type: "ZIP",
+				file: "test-archive.zip",
+			},
 		];
-		
+
 		for (const doc of documentTypes) {
 			cy.contains("button", "Add document").click();
 			cy.get('[data-test="document-label-input"]').type(doc.title);
@@ -369,18 +375,28 @@ describe("Modules Page", () => {
 		// For grouped - Test different file types in groups
 		const groupTitles = ["PDF Group", "Text Group"];
 		const groupFileTypes = [
-			{ type: "PDF", file: "FlexiPortal_Overview.pdf", label: "Group PDF Test" },
-			{ type: "TXT", file: "test-document.txt", label: "Group Text Test" }
+			{
+				type: "PDF",
+				file: "FlexiPortal_Overview.pdf",
+				label: "Group PDF Test",
+			},
+			{
+				type: "TXT",
+				file: "test-document.txt",
+				label: "Group Text Test",
+			},
 		];
-		
+
 		for (let i = 0; i < groupTitles.length; i++) {
 			const title = groupTitles[i];
 			const fileType = groupFileTypes[i];
-			
+
 			cy.contains("button", "Add group").click();
 			cy.get('[data-test="document-group-title-input"]').type(title);
 			cy.contains("button", "Add file").click();
-			cy.get('[data-test="document-group-label-input"]').type(fileType.label);
+			cy.get('[data-test="document-group-label-input"]').type(
+				fileType.label,
+			);
 			cy.get('[data-test="document-type-select"]').click();
 			cy.get(`[data-value="${fileType.type}"]`).click();
 			cy.get('input[type="file"]').attachFile(fileType.file);
@@ -533,7 +549,7 @@ describe("Modules Page", () => {
 					);
 					cy.get('[data-test="button-add-visualization"]').click();
 					cy.get('[data-test="screen-size-select"]').click();
-					cy.get('[data-value="1500"]').click();
+					cy.get('[data-value="lg"]').click();
 					cy.get(".react-grid-layout").then(() => {
 						cy.get(
 							`[data-prefix="${visualizations[0]}"] > .react-resizable-handle`,
