@@ -36,8 +36,8 @@ const findSessionCookieForBaseUrl = (baseUrl, cookies) =>
 	);
 
 before(() => {
-	const username = Cypress.env("dhis2Username");
-	const password = Cypress.env("dhis2Password");
+	const username = Cypress.env("dhis2Username") ?? "admin";
+	const password = Cypress.env("dhis2Password") ?? "district";
 	const baseUrl = Cypress.env("dhis2BaseUrl");
 	const instanceVersion = Cypress.env("dhis2InstanceVersion");
 
