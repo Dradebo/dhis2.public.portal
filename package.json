@@ -51,7 +51,7 @@
 	"repository": {
 		"url": "git@github.com:hisptz/dhis2-public-portal.git"
 	},
-	"version": "1.5.2",
+	"version": "1.5.3",
 	"pnpm": {
 		"overrides": {
 			"@types/react": "19.2.8",
