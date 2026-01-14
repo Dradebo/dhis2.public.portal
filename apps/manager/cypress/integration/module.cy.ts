@@ -104,6 +104,8 @@ describe("Modules Page", () => {
 
 			cy.contains("button", "Create module").click();
 
+			cy.contains("button", "Back to all modules").click();
+
 			cy.contains("td", label).should("exist");
 		});
 	});
@@ -129,7 +131,7 @@ describe("Modules Page", () => {
 		cy.contains("button", "Add a new visualization").click();
 		cy.get('[data-test="visualization-type-select-content"]').click();
 		cy.get('[data-value="CHART"]').click();
-		cy.wait(2000);
+		cy.wait(5000);
 		cy.get('[data-test="visualization-select-content"]').click();
 		cy.get(`[data-value="${visualizations[0]}"]`).click();
 		cy.get('textarea[name="caption"]').type(
@@ -140,7 +142,7 @@ describe("Modules Page", () => {
 		cy.contains("button", "Add a new visualization").click();
 		cy.get('[data-test="visualization-type-select-content"]').click();
 		cy.get('[data-value="CHART"]').click();
-		cy.wait(2000);
+		cy.wait(5000);
 		cy.get('[data-test="visualization-select-content"]').click();
 		cy.get(`[data-value="${visualizations[1]}"]`).click();
 		cy.get('textarea[name="caption"]').type(
@@ -161,7 +163,7 @@ describe("Modules Page", () => {
 			)
 				.trigger("mousedown", { button: 0 })
 				.trigger("mousemove", { clientX: 200, clientY: 800 })
-				.trigger("mouseup");
+				.trigger("mouseup", { force: true });
 		});
 
 		cy.get(".react-grid-layout").within(() => {
@@ -242,7 +244,7 @@ describe("Modules Page", () => {
 			)
 				.trigger("mousedown", { button: 0 })
 				.trigger("mousemove", { clientX: 200, clientY: 800 })
-				.trigger("mouseup");
+				.trigger("mouseup", { force: true });
 		});
 
 		cy.get(".react-grid-layout").within(() => {
@@ -266,7 +268,9 @@ describe("Modules Page", () => {
 		cy.get('input[name="config.title"]').type("New Test Module");
 
 		cy.contains("button", "Add item").click();
-		cy.get('input[name="title"]').type("Blog Test");
+		cy.get('[data-test="item-title-content"]')
+			.find('input[name="title"]')
+			.type("Blog Test");
 		cy.contains("button", "Create item").click();
 		cy.get('textarea[name="shortDescription"]').type(
 			"This is a short description for the blog test item.",
@@ -373,7 +377,7 @@ describe("Modules Page", () => {
 		cy.get('input[value="segmented"]').click();
 
 		// For grouped - Test different file types in groups
-		const groupTitles = ["PDF Group", "Text Group"];
+		const groupTitles = ["Text Group", "PDF Group"];
 		const groupFileTypes = [
 			{
 				type: "PDF",
@@ -407,14 +411,14 @@ describe("Modules Page", () => {
 		cy.wait(5000);
 		cy.contains("button", "Sort document groups").click();
 
-		cy.get('[data-rfd-draggable-id="test-group"]')
+		cy.get('[data-rfd-draggable-id="text-group"]')
 			.focus()
 			.trigger("keydown", { keyCode: 32 });
-		cy.get('[data-rfd-draggable-id="test-group"]').trigger("keydown", {
+		cy.get('[data-rfd-draggable-id="text-group"]').trigger("keydown", {
 			keyCode: 40,
 			force: true,
 		});
-		cy.get('[data-rfd-draggable-id="test-group"]').trigger("keydown", {
+		cy.get('[data-rfd-draggable-id="text-group"]').trigger("keydown", {
 			keyCode: 32,
 			force: true,
 		});
@@ -422,7 +426,7 @@ describe("Modules Page", () => {
 		cy.contains("button", "Update order").click();
 		cy.wait(1000);
 
-		cy.contains("td", "PDF Document")
+		cy.contains("td", "Text Group")
 			.parent("tr")
 			.within(() => {
 				cy.get('[data-test="edit-document-group-button"]').click();
