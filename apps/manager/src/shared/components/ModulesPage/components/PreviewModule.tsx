@@ -9,7 +9,7 @@ export function PreviewModule() {
 		from: "/modules/_provider/$moduleId",
 	});
 	const config = useAppMetadataConfig();
-	const url = `${config.applicationURL}/modules/${moduleId}?preview=true`;
+	const url = `${config.applicationURL}/preview/modules/${moduleId}`;
 
 	const onPreview = () => {
 		document.open(url, "_blank", "noopener=true; noreferrer=true");

@@ -17,7 +17,10 @@ import { DashboardLayoutEditor } from "../../DashboardLayoutEditor";
 import { useRouter } from "@tanstack/react-router";
 import { useModule } from "../../ModulesPage/providers/ModuleProvider";
 import { useSaveModule } from "../../ModulesPage/hooks/save";
-import { ScreenSizeId, SUPPORTED_SCREEN_SIZES } from "../hooks/view";
+import {
+	ScreenSizeId,
+	SUPPORTED_SCREEN_SIZES,
+} from "@packages/shared/constants";
 
 interface VisualizationLayoutEditorProps {
 	prefix?: `config.groups.${number}`;

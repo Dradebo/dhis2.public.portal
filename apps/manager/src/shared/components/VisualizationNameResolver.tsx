@@ -4,7 +4,7 @@ import React from "react";
 
 const visQuery = {
 	vis: {
-		resource: "visualizations",
+		resource: "identifiableObjects",
 		id: ({ id }) => id,
 		params: {
 			fields: ["id", "displayName", "type"],

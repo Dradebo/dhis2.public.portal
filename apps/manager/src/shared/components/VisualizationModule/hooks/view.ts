@@ -4,26 +4,115 @@ import { useFieldArray, useFormContext } from "react-hook-form";
 import {
 	DisplayItem,
 	DisplayItemType,
+	SectionModuleConfig,
 	VisualizationItem,
 	VisualizationModule,
 } from "@packages/shared/schemas";
-import { last, mapValues } from "lodash";
+import { isEmpty, last, mapValues } from "lodash";
 import { useAlert } from "@dhis2/app-runtime";
+import {
+	getDefaultLayoutConfig,
+	SUPPORTED_SCREEN_SIZES,
+} from "@packages/shared/constants";
 
-export type ScreenSizeId = "sm" | "md" | "lg";
+export function useManageSectionVisualizations({
+	prefix,
+}: {
+	prefix: `config.sections.${number}`;
+}) {
+	const { show } = useAlert(
+		({ message }) => message,
+		({ type }) => ({ ...type, duration: 3000 }),
+	);
+	const { getValues, setValue } = useFormContext<
+		SectionModuleConfig,
+		`config.sections.${number}`
+	>();
 
-export interface ScreenSize {
-	name: string;
-	value: number;
-	cols: number;
-	id: ScreenSizeId;
+	const { append, remove } = useFieldArray<
+		SectionModuleConfig,
+		`config.sections.${number}.items`,
+		"fieldId"
+	>({
+		name: `${prefix}.items`,
+		keyName: "fieldId",
+	});
+
+	const addVisualizationToLayout = useCallback(
+		(displayItem: DisplayItem) => {
+			const layout = !isEmpty(getValues(`${prefix}.layouts`))
+				? getValues(`${prefix}.layouts`)
+				: getDefaultLayoutConfig();
+			const updatedLayout = mapValues(layout, (value, key) => {
+				const layoutMaxCols =
+					SUPPORTED_SCREEN_SIZES.find(({ id }) => id === key)?.cols ||
+					12;
+				const lastItem = last(value);
+				const y = lastItem ? lastItem.y + lastItem.h : 0;
+				const newItem = {
+					i: displayItem.item.id,
+					x: 0,
+					y,
+					w: layoutMaxCols,
+					h: 8,
+				};
+				return [...(value ?? []), newItem];
+			});
+			setValue(`${prefix}.layouts`, updatedLayout);
+		},
+		[prefix, getValues, setValue],
+	);
+
+	const removeVisualizationToLayout = useCallback(
+		(id: string) => {
+			const layout = getValues(`${prefix}.layouts`);
+			const updatedLayout = mapValues(layout, (value, key) => {
+				return value?.filter((item) => item.i !== id);
+			});
+			setValue(`${prefix}.layouts`, updatedLayout);
+		},
+		[prefix, getValues, setValue],
+	);
+
+	const onAddVisualization = useCallback(
+		(visualization: VisualizationItem) => {
+			const fields = getValues(`${prefix}.items`);
+			if (fields.some((field) => field.item.id === visualization.id)) {
+				show({
+					message: i18n.t("This visualization is already added"),
+					type: { critical: true },
+				});
+				return;
+			}
+			const displayItem: DisplayItem = {
+				type: DisplayItemType.VISUALIZATION,
+				item: visualization,
+			};
+			append(displayItem);
+			addVisualizationToLayout(displayItem);
+		},
+		[append, getValues],
+	);
+
+	const onRemoveVisualization = useCallback(
+		(id: string) => {
+			const fields = getValues(`${prefix}.items`);
+			removeVisualizationToLayout(id);
+			const field = fields.findIndex(({ item }) => item.id === id);
+			if (field === -1) {
+				console.warn(`Item with id ${id} not found in fields`);
+				return;
+			}
+			remove(field);
+		},
+		[remove, getValues],
+	);
+
+	return {
+		onAddVisualization,
+		onRemoveVisualization,
+	};
 }
-
-export const SUPPORTED_SCREEN_SIZES: ScreenSize[] = [
-	{ name: i18n.t("Small screens"), value: 996, cols: 6, id: "sm" },
-	{ name: i18n.t("Medium screen"), value: 1200, cols: 10, id: "md" },
-	{ name: i18n.t("Large screen"), value: 1500, cols: 12, id: "lg" },
-] as const;
 
 export function useManageVisualizations({
 	prefix,
@@ -38,7 +127,10 @@ export function useManageVisualizations({
 		VisualizationModule,
 		"config.layouts" | `config.groups.${number}.layouts`
 	>();
-	const configPath: `config.groups.${number}` | `config` = useMemo(() => {
+	const configPath:
+		| `config.groups.${number}`
+		| `config`
+		| `config.sections.${number}` = useMemo(() => {
 		if (prefix) {
 			return prefix;
 		}

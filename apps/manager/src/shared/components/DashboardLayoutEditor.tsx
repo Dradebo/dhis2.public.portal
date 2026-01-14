@@ -24,11 +24,11 @@ import "react-resizable/css/styles.css";
 import { MainVisualization } from "./ModulesPage/components/Visualizations/MainVisualization";
 import { ErrorBoundary } from "react-error-boundary";
 import { VisualizationError } from "./ModulesPage/components/Visualizations/components/VisualizationError";
+import { useManageVisualizations } from "./VisualizationModule/hooks/view";
 import {
 	ScreenSizeId,
 	SUPPORTED_SCREEN_SIZES,
-	useManageVisualizations,
-} from "./VisualizationModule/hooks/view";
+} from "@packages/shared/constants";
 
 function DashboardItemComponent({ item }: { item: VisualizationItem }) {
 	return (

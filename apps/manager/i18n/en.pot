@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2026-01-13T10:26:19.161Z\n"
-"PO-Revision-Date: 2026-01-13T10:26:19.162Z\n"
+"POT-Creation-Date: 2026-01-14T05:36:28.824Z\n"
+"PO-Revision-Date: 2026-01-14T05:36:28.825Z\n"
 
 msgid "Could not get Appearance configurations"
 msgstr "Could not get Appearance configurations"
@@ -35,23 +35,11 @@ msgstr "Back to all modules"
 msgid "Module"
 msgstr "Module"
 
-msgid "Small screen"
-msgstr "Small screen"
-
-msgid "Medium screen"
-msgstr "Medium screen"
-
-msgid "Large screen"
-msgstr "Large screen"
-
 msgid "Please fix the validation errors before saving"
 msgstr "Please fix the validation errors before saving"
 
 msgid "Failed to save section"
 msgstr "Failed to save section"
-
-msgid "This visualization is already added"
-msgstr "This visualization is already added"
 
 msgid "Back"
 msgstr "Back"
@@ -561,6 +549,9 @@ msgstr "documentation"
 msgid "to add more modules"
 msgstr "to add more modules"
 
+msgid "Preview module"
+msgstr "Preview module"
+
 msgid "Could not save changes"
 msgstr "Could not save changes"
 
@@ -653,9 +644,6 @@ msgstr "Could not create new item"
 
 msgid "Create Section"
 msgstr "Create Section"
-
-msgid "Please select the display type of this section first"
-msgstr "Please select the display type of this section first"
 
 msgid "Create section"
 msgstr "Create section"
@@ -767,8 +755,8 @@ msgstr "Save group changes"
 msgid "Failed to save visualization"
 msgstr "Failed to save visualization"
 
-msgid "Small screens"
-msgstr "Small screens"
+msgid "This visualization is already added"
+msgstr "This visualization is already added"
 
 msgid "Welcome to the FlexiPortal Manager!"
 msgstr "Welcome to the FlexiPortal Manager!"
