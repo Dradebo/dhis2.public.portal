@@ -1,13 +1,13 @@
 import * as React from "react";
 import { Suspense } from "react";
 import { createRootRoute, Outlet } from "@tanstack/react-router";
-import { SideMenu } from "../shared/components/SideMenu/SideMenu";
+import { SideMenu } from "@/shared/components/SideMenu/SideMenu";
 import { CircularLoader } from "@dhis2/ui";
-import { useCheckConfig } from "../shared/hooks/config";
-import { InitialConfigurationSetup } from "../shared/components/InitialConfigurationSetup";
+import { useCheckConfig } from "@/shared/hooks/config";
+import { InitialConfigurationSetup } from "@/shared/components/InitialConfigurationSetup";
 import { ErrorBoundary } from "react-error-boundary";
 import ErrorPage from "../shared/components/ErrorPage/ErrorPage";
-import { SyncURLWithGlobalShell } from "../shared/components/SyncURLWithGlobalShell";
+import { SyncURLWithGlobalShell } from "@/shared/components/SyncURLWithGlobalShell";
 
 export const Route = createRootRoute({
 	component: RootComponent,
