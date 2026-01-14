@@ -16,9 +16,6 @@ export default defineConfig({
 	projectId: "usucz3",
 	env: {
 		networkMode: "live",
-		dhis2BaseUrl: "http://localhost:8080",
-		dhis2Username: "admin",
-		dhis2Password: "district",
 		dhis2DataTestPrefix: "d2-ppm",
 		dhis2InstanceVersion: 41,
 	},
