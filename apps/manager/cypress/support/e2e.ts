@@ -36,10 +36,16 @@ const findSessionCookieForBaseUrl = (baseUrl, cookies) =>
 	);
 
 before(() => {
-	const username = Cypress.env("dhis2Username") ?? "admin";
-	const password = Cypress.env("dhis2Password") ?? "district";
+	const username = Cypress.env("dhis2Username");
+	const password = Cypress.env("dhis2Password");
 	const baseUrl = Cypress.env("dhis2BaseUrl");
 	const instanceVersion = Cypress.env("dhis2InstanceVersion");
+
+	console.info({
+		baseUrl,
+		username,
+		dhis2Version: instanceVersion,
+	});
 
 	// @ts-expect-error Injected by DHIS2 commands
 	cy.loginByApi({ username, password, baseUrl });
