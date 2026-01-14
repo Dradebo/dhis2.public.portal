@@ -12,6 +12,8 @@ const viteConfig = defineConfig(async (configEnv) => {
 				autoCodeSplitting: true,
 				routesDirectory: "../../src/modules",
 				generatedRouteTree: "../../src/routeTree.gen.ts",
+				verboseFileRoutes: true,
+				enableRouteGeneration: true,
 			}),
 			tailwindcss(),
 		],

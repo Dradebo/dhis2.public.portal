@@ -24,6 +24,7 @@ export function VisualizationNameResolver({ id }: { id: string }) {
 		variables: {
 			id,
 		},
+		lazy: !id,
 	});
 
 	if (loading) {

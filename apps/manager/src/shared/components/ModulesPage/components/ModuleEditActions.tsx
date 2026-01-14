@@ -12,7 +12,7 @@ export function ModuleEditActions({ onComplete }: { onComplete: () => void }) {
 	const { moduleId } = useParams({
 		from: "/modules/_provider/$moduleId/_formProvider/edit/",
 	});
-	const { save } = useSaveModule(moduleId);
+	const { save } = useSaveModule();
 	const { handleSubmit, formState } = useFormContext<AppModule>();
 	const navigate = useNavigate();
 	const refresh = useRefreshModules();

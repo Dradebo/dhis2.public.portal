@@ -18,9 +18,9 @@ export function SectionEditActions() {
 	});
 
 	const { moduleId } = useParams({
-		from: "/modules/_provider/$moduleId/_formProvider/edit/",
+		from: "/modules/_provider/$moduleId/_formProvider/edit/section/$sectionIndex/",
 	});
-	const { save } = useSaveModule(moduleId);
+	const { save } = useSaveModule();
 	const { handleSubmit, formState, reset, getValues } =
 		useFormContext<AppModule>();
 	const { show } = useAlert(

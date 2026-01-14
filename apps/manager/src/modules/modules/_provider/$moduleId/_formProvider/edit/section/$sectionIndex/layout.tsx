@@ -65,7 +65,7 @@ function RouteComponent() {
 		});
 	};
 
-	const { save } = useSaveModule(moduleId);
+	const { save } = useSaveModule();
 	const { handleSubmit, formState, reset } = useFormContext<AppModule>();
 	const { show } = useAlert(
 		({ message }) => message,

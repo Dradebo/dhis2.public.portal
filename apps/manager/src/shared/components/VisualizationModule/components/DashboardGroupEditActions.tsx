@@ -13,9 +13,9 @@ export function DashboardGroupEditActions() {
 	});
 
 	const { moduleId } = useParams({
-		from: "/modules/_provider/$moduleId/_formProvider/edit/",
+		from: "/modules/_provider/$moduleId/_formProvider/edit/$groupIndex/",
 	});
-	const { save } = useSaveModule(moduleId);
+	const { save } = useSaveModule();
 	const { handleSubmit, formState } = useFormContext<AppModule>();
 	const { show } = useAlert(
 		({ message }) => message,

@@ -15,7 +15,6 @@ import { useAlert } from "@dhis2/app-runtime";
 import { AddVisualization } from "./AddVisualization/AddVisualization";
 import { DashboardLayoutEditor } from "../../DashboardLayoutEditor";
 import { useRouter } from "@tanstack/react-router";
-import { useModule } from "../../ModulesPage/providers/ModuleProvider";
 import { useSaveModule } from "../../ModulesPage/hooks/save";
 import {
 	ScreenSizeId,
@@ -41,9 +40,7 @@ export function VisualizationManager({
 		({ type }) => ({ ...type, duration: 3000 }),
 	);
 	const router = useRouter();
-	const module = useModule();
-	const moduleId = module?.id;
-	const { save } = useSaveModule(moduleId);
+	const { save } = useSaveModule();
 
 	const handleFormSubmit = useCallback(
 		async (data: VisualizationModule) => {
