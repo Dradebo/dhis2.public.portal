@@ -54,6 +54,6 @@ jobs:
           publish-summary: true
         env:
           CYPRESS_RECORD_KEY: ${{ secrets.MANAGER_CYPRESS_RECORD_KEY }}
-          CYPRESS_dhis2Username: ${{ secrets.CYPRESS_DHIS2_USERNAME }}
-          CYPRESS_dhis2Password: ${{ secrets.CYPRESS_DHIS2_PASSWORD }}
+          CYPRESS_DHIS2_USERNAME: ${{ secrets.CYPRESS_DHIS2_USERNAME }}
+          CYPRESS_DHIS2_PASSWORD: ${{ secrets.CYPRESS_DHIS2_PASSWORD }}
           DHIS2_PROXY_URL: ${{ vars.DHIS2_BASE_URL }}
