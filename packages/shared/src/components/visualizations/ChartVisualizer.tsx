@@ -2,7 +2,7 @@ import {
 	AnalyticsData,
 	LegendSetConfig,
 	VisualizationConfig,
-} from "@packages/shared/schemas";
+} from "../../schemas";
 import React, { memo, RefObject, useRef } from "react";
 import HighchartsReact from "highcharts-react-official";
 import { DHIS2Chart } from "@hisptz/dhis2-analytics";
@@ -10,8 +10,9 @@ import {
 	getChartLayout,
 	getChartType,
 	getVisualizationLegendSet,
-} from "@packages/shared/utils";
+} from "../../utils";
 import { useResizeObserver } from "usehooks-ts";
+import { isEmpty } from "lodash";
 
 export interface ChartVisualizerProps {
 	analytics: AnalyticsData;
@@ -37,7 +38,6 @@ export const ChartVisualizer = memo(function ChartVisualizer({
 		ref: ref!,
 		box: "border-box",
 	});
-
 	return (
 		<div ref={ref} style={{ width: "100%", height: "100%" }}>
 			<DHIS2Chart
@@ -55,7 +55,7 @@ export const ChartVisualizer = memo(function ChartVisualizer({
 					colors,
 					layout,
 					height: height,
-					showFilterAsTitle: false,
+					showFilterAsTitle: !isEmpty(visualization.filters),
 					name: visualization.displayName,
 					allowChartTypeChange: false,
 					legendSet: legendSet,

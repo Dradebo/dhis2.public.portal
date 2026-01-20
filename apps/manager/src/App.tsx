@@ -1,19 +1,17 @@
 import React from "react";
 import "./main.css";
-import "./output.css";
 import {
 	createHashHistory,
 	createRouter,
 	RouterProvider,
 } from "@tanstack/react-router";
-import { routeTree } from "./routes.gen";
+import { routeTree } from "./routeTree.gen";
 import { DialogProvider } from "@hisptz/dhis2-ui";
 import "leaflet/dist/leaflet.css";
 
 const hashHistory = createHashHistory();
 
 const router = createRouter({ routeTree, history: hashHistory });
-
 
 // Register the router instance for type safety
 declare module "@tanstack/react-router" {
@@ -23,8 +21,8 @@ declare module "@tanstack/react-router" {
 }
 
 const MyApp = () => (
-		<DialogProvider>
-			<RouterProvider router={router} />
-		</DialogProvider>
+	<DialogProvider>
+		<RouterProvider router={router} />
+	</DialogProvider>
 );
 export default MyApp;

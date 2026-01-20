@@ -131,7 +131,7 @@ describe("Modules Page", () => {
 		cy.contains("button", "Add a new visualization").click();
 		cy.get('[data-test="visualization-type-select-content"]').click();
 		cy.get('[data-value="CHART"]').click();
-		cy.wait(2000);
+		cy.wait(5000);
 		cy.get('[data-test="visualization-select-content"]').click();
 		cy.get(`[data-value="${visualizations[0]}"]`).click();
 		cy.get('textarea[name="caption"]').type(
@@ -142,7 +142,7 @@ describe("Modules Page", () => {
 		cy.contains("button", "Add a new visualization").click();
 		cy.get('[data-test="visualization-type-select-content"]').click();
 		cy.get('[data-value="CHART"]').click();
-		cy.wait(2000);
+		cy.wait(5000);
 		cy.get('[data-test="visualization-select-content"]').click();
 		cy.get(`[data-value="${visualizations[1]}"]`).click();
 		cy.get('textarea[name="caption"]').type(
@@ -151,7 +151,7 @@ describe("Modules Page", () => {
 		cy.get('[data-test="button-add-visualization"]').click();
 
 		cy.get('[data-test="screen-size-select"]').click();
-		cy.get('[data-value="1500"]').click();
+		cy.get('[data-value="lg"]').click();
 
 		cy.get(
 			`[data-prefix="${visualizations[1]}"] > .absolute > svg > path`,
@@ -163,7 +163,7 @@ describe("Modules Page", () => {
 			)
 				.trigger("mousedown", { button: 0 })
 				.trigger("mousemove", { clientX: 200, clientY: 800 })
-				.trigger("mouseup");
+				.trigger("mouseup", { force: true });
 		});
 
 		cy.get(".react-grid-layout").within(() => {
@@ -232,7 +232,7 @@ describe("Modules Page", () => {
 		cy.get('[data-test="button-add-visualization"]').click();
 
 		cy.get('[data-test="screen-size-select"]').click();
-		cy.get('[data-value="1500"]').click();
+		cy.get('[data-value="lg"]').click();
 
 		cy.get(
 			`[data-prefix="${visualizations[1]}"] > .absolute > svg > path`,
@@ -244,7 +244,7 @@ describe("Modules Page", () => {
 			)
 				.trigger("mousedown", { button: 0 })
 				.trigger("mousemove", { clientX: 200, clientY: 800 })
-				.trigger("mouseup");
+				.trigger("mouseup", { force: true });
 		});
 
 		cy.get(".react-grid-layout").within(() => {
@@ -268,7 +268,9 @@ describe("Modules Page", () => {
 		cy.get('input[name="config.title"]').type("New Test Module");
 
 		cy.contains("button", "Add item").click();
-		cy.get('input[name="title"]').type("Blog Test");
+		cy.get('[data-test="item-title-content"]')
+			.find('input[name="title"]')
+			.type("Blog Test");
 		cy.contains("button", "Create item").click();
 		cy.get('textarea[name="shortDescription"]').type(
 			"This is a short description for the blog test item.",
@@ -303,14 +305,14 @@ describe("Modules Page", () => {
 		cy.wait(5000);
 		cy.contains("button", "Sort items").click();
 
-		cy.get('[data-rbd-draggable-id="blog-test"]')
+		cy.get('[data-rfd-draggable-id="blog-test"]')
 			.focus()
 			.trigger("keydown", { keyCode: 32 });
-		cy.get('[data-rbd-draggable-id="blog-test"]').trigger("keydown", {
+		cy.get('[data-rfd-draggable-id="blog-test"]').trigger("keydown", {
 			keyCode: 40,
 			force: true,
 		});
-		cy.get('[data-rbd-draggable-id="blog-test"]').trigger("keydown", {
+		cy.get('[data-rfd-draggable-id="blog-test"]').trigger("keydown", {
 			keyCode: 32,
 			force: true,
 		});
@@ -339,19 +341,32 @@ describe("Modules Page", () => {
 
 		cy.get('input[name="config.title"]').type("New Test Module");
 
-		//For non-grouped
-		const documentTitles = ["Document Test", "Document Test 2"];
-		for (const title of documentTitles) {
+		//For non-grouped - Test different file types
+		const documentTypes = [
+			{
+				title: "PDF Document",
+				type: "PDF",
+				file: "FlexiPortal_Overview.pdf",
+			},
+			{ title: "Text Document", type: "TXT", file: "test-document.txt" },
+			{
+				title: "Archive Document",
+				type: "ZIP",
+				file: "test-archive.zip",
+			},
+		];
+
+		for (const doc of documentTypes) {
 			cy.contains("button", "Add document").click();
-			cy.get('[data-test="document-label-input"]').type(title);
+			cy.get('[data-test="document-label-input"]').type(doc.title);
 			cy.get('[data-test="document-type-select"]').click();
-			cy.get('[data-value="PDF"]').click();
-			cy.get('input[type="file"]').attachFile("FlexiPortal_Overview.pdf");
+			cy.get(`[data-value="${doc.type}"]`).click();
+			cy.get('input[type="file"]').attachFile(doc.file);
 			cy.get('[data-test="add-document-button"]').click();
-			cy.contains("td", title).should("be.visible");
+			cy.contains("td", doc.title).should("be.visible");
 		}
 
-		cy.contains("td", "Document Test")
+		cy.contains("td", "PDF Document")
 			.parent("tr")
 			.within(() => {
 				cy.get('[data-test="dhis2-uicore-button"]').click();
@@ -361,17 +376,34 @@ describe("Modules Page", () => {
 		cy.get('input[name="config.grouped"]').click();
 		cy.get('input[value="segmented"]').click();
 
-		const groupTitles = ["Test Group", "Test Group 2"];
-		for (const title of groupTitles) {
+		// For grouped - Test different file types in groups
+		const groupTitles = ["Text Group", "PDF Group"];
+		const groupFileTypes = [
+			{
+				type: "PDF",
+				file: "FlexiPortal_Overview.pdf",
+				label: "Group PDF Test",
+			},
+			{
+				type: "TXT",
+				file: "test-document.txt",
+				label: "Group Text Test",
+			},
+		];
+
+		for (let i = 0; i < groupTitles.length; i++) {
+			const title = groupTitles[i];
+			const fileType = groupFileTypes[i];
+
 			cy.contains("button", "Add group").click();
 			cy.get('[data-test="document-group-title-input"]').type(title);
 			cy.contains("button", "Add file").click();
 			cy.get('[data-test="document-group-label-input"]').type(
-				"Group Document Test",
+				fileType.label,
 			);
 			cy.get('[data-test="document-type-select"]').click();
-			cy.get('[data-value="PDF"]').click();
-			cy.get('input[type="file"]').attachFile("FlexiPortal_Overview.pdf");
+			cy.get(`[data-value="${fileType.type}"]`).click();
+			cy.get('input[type="file"]').attachFile(fileType.file);
 			cy.get('[data-test="save-file-button"]').click();
 			cy.get('[data-test="save-document-group-button"]').click();
 		}
@@ -379,14 +411,14 @@ describe("Modules Page", () => {
 		cy.wait(5000);
 		cy.contains("button", "Sort document groups").click();
 
-		cy.get('[data-rbd-draggable-id="test-group"]')
+		cy.get('[data-rfd-draggable-id="text-group"]')
 			.focus()
 			.trigger("keydown", { keyCode: 32 });
-		cy.get('[data-rbd-draggable-id="test-group"]').trigger("keydown", {
+		cy.get('[data-rfd-draggable-id="text-group"]').trigger("keydown", {
 			keyCode: 40,
 			force: true,
 		});
-		cy.get('[data-rbd-draggable-id="test-group"]').trigger("keydown", {
+		cy.get('[data-rfd-draggable-id="text-group"]').trigger("keydown", {
 			keyCode: 32,
 			force: true,
 		});
@@ -394,7 +426,7 @@ describe("Modules Page", () => {
 		cy.contains("button", "Update order").click();
 		cy.wait(1000);
 
-		cy.contains("td", "Document Test")
+		cy.contains("td", "Text Group")
 			.parent("tr")
 			.within(() => {
 				cy.get('[data-test="edit-document-group-button"]').click();
@@ -521,7 +553,7 @@ describe("Modules Page", () => {
 					);
 					cy.get('[data-test="button-add-visualization"]').click();
 					cy.get('[data-test="screen-size-select"]').click();
-					cy.get('[data-value="1500"]').click();
+					cy.get('[data-value="lg"]').click();
 					cy.get(".react-grid-layout").then(() => {
 						cy.get(
 							`[data-prefix="${visualizations[0]}"] > .react-resizable-handle`,

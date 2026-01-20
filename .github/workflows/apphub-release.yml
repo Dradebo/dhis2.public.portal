@@ -7,7 +7,7 @@ env:
 on:
   # Triggers the workflow when a new release is created
   release:
-
+    types: [ released ]
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
@@ -17,16 +17,31 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+      - uses: pnpm/action-setup@v4
+        name: Install pnpm
         with:
-          node-version: lts/*
-          cache: "yarn"
+          run_install: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'pnpm'
 
       - name: Install JS dependencies
-        run: yarn install --frozen-lockfile
-
-      - name: Build
-        run: yarn manager build
+        run: pnpm install --frozen-lockfile
+      # Publish to the App Hub
+      - name: Set channel
+        id: set_channel
+        run: |
+          release_name="${{ github.event.release.name }}"
+          channel="stable"
+          if [[ "$release_name" == *"alpha"* ]]; then
+            channel="alpha"
+          elif [[ "$release_name" == *"beta"* ]]; then
+            channel="beta"
+          fi
+          echo "channel=$channel" >> $GITHUB_OUTPUT
       # Publish to the App Hub
       - name: Release to DHIS2 App Hub
-        run: yarn manager publish
+        run: pnpm run  publish:app-hub --filter manager -- -k ${{secrets.D2_APP_HUB_API_KEY}} --channel ${{ steps.set_channel.outputs.channel }}

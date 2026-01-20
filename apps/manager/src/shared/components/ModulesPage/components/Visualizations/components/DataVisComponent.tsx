@@ -5,9 +5,12 @@ import {
 } from "@packages/shared/schemas";
 import { FullScreen, useFullScreenHandle } from "react-full-screen";
 import { useAnalytics } from "@packages/shared/hooks";
-import React from "react";
+import React, { useMemo } from "react";
 import { FullLoader } from "../../../../FullLoader";
-import { ChartSelector, VisualizationTitle } from "@packages/ui/visualizations";
+import {
+	ChartSelector,
+	VisualizationTitle,
+} from "@packages/shared/visualizations";
 
 export function DataVisComponent({
 	visualizationConfig,
@@ -20,8 +23,10 @@ export function DataVisComponent({
 }) {
 	const { type } = config;
 	const handler = useFullScreenHandle();
+	const defaultParams = useMemo(() => new Map(), []);
 	const { analytics, loading: analyticsLoading } = useAnalytics({
 		visualizationConfig,
+		params: defaultParams,
 	});
 
 	return (
